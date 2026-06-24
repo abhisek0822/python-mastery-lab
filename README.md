@@ -1,0 +1,1 @@
+This repository is a structured Python engineering portfolio designed to demonstrate strong command over Python fundamentals, OOP, concurrency, networking, system design, and framework internals through real-world projects.
