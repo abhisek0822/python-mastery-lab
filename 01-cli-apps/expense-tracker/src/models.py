@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 
 
@@ -7,7 +7,7 @@ class Expense:
     amount: float
     category: str
     note: str
-    created_at: str = datetime.now().isoformat()
+    created_at: str = field(default_factory=lambda: datetime.now().isoformat())
 
     def to_dict(self):
         return {
