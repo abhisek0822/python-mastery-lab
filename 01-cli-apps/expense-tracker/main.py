@@ -41,14 +41,23 @@ def main():
     elif args.command == "list":
         expenses = get_all_expenses()
 
-        for expense in expenses:
-            print(
-                f"{expense['created_at']} | "
-                f"{expense['category']} | "
-                f"{expense['amount']} | "
-                f"{expense['note']}"
-            )
-    
+        if not expenses:
+            print("No expenses found.")
+        else:
+            print("-" * 75)
+            print(f"{'Date':<20} {'Category':<15} {'Amount':<10} {'Note':<25}")
+            print("-" * 75)
+
+            for expense in expenses:
+                date = expense["created_at"][:10]
+                category = expense["category"]
+                amount = expense["amount"]
+                note = expense["note"]
+
+                print(f"{date:<20} {category:<15} {amount:<10} {note:<25}")
+
+            print("-" * 75)
+
     elif args.command == "summary":
         summary = get_category_summary()
 
