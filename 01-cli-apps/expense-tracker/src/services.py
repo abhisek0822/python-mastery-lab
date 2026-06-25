@@ -1,3 +1,4 @@
+import csv
 from datetime import datetime
 from src.models import Expense
 from src.storage import save_expense, load_expenses
@@ -59,3 +60,20 @@ def get_monthly_summary(year, month):
         "summary": summary,
         "total": total
     }
+
+def export_expenses_to_csv(file_name="expenses_export.csv"):
+    expenses = load_expenses()
+
+    if not expenses:
+        return None
+
+    with open(file_name, "w", newline="") as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=["amount", "category", "note", "created_at"]
+        )
+
+        writer.writeheader()
+        writer.writerows(expenses)
+
+    return file_name

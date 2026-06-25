@@ -1,6 +1,12 @@
 import argparse
 from dbm import error
-from src.services import add_expense, get_all_expenses, get_category_summary, get_monthly_summary
+from src.services import (
+    add_expense,
+    get_all_expenses,
+    get_category_summary,
+    get_monthly_summary,
+    export_expenses_to_csv
+)
 
 def main():
     parser = argparse.ArgumentParser(description="CLI Expense Tracker")
@@ -19,6 +25,9 @@ def main():
     monthly_parser = subparsers.add_parser("monthly", help="Show monthly expense summary")
     monthly_parser.add_argument("--year", type=int, required=True)
     monthly_parser.add_argument("--month", type=int, required=True)
+
+    export_parser = subparsers.add_parser("export", help="Export expenses to CSV")
+    export_parser.add_argument("--file", type=str, default="expenses_export.csv")
 
     args = parser.parse_args()
 
@@ -63,6 +72,14 @@ def main():
 
             print("-" * 30)
             print(f"Total: {result['total']}")
+
+    elif args.command == "export":
+        file_name = export_expenses_to_csv(args.file)
+
+        if file_name is None:
+            print("No expenses found to export.")
+        else:
+            print(f"Expenses exported successfully to {file_name}")
 
     else:
         parser.print_help()
