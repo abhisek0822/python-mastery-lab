@@ -1,6 +1,6 @@
 import argparse
 from dbm import error
-from src.services import add_expense, get_all_expenses
+from src.services import add_expense, get_all_expenses, get_category_summary
 
 
 def main():
@@ -14,6 +14,7 @@ def main():
     add_parser.add_argument("--note", type=str, required=True)
 
     subparsers.add_parser("list", help="List all expenses")
+    subparsers.add_parser("summary", help="Show category-wise expense summary")
 
     args = parser.parse_args()
 
@@ -34,6 +35,15 @@ def main():
                 f"{expense['amount']} | "
                 f"{expense['note']}"
             )
+    
+    elif args.command == "summary":
+        summary = get_category_summary()
+
+        if not summary:
+            print("No expenses found.")
+        else:
+            for category, total in summary.items():
+                print(f"{category}: {total}")
 
     else:
         parser.print_help()

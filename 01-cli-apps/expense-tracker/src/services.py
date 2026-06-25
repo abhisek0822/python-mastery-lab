@@ -23,3 +23,18 @@ def add_expense(amount, category, note):
 
 def get_all_expenses():
     return load_expenses()
+
+def get_category_summary():
+    expenses = load_expenses()
+    summary = {}
+
+    for expense in expenses:
+        category = expense["category"]
+        amount = expense["amount"]
+
+        if category not in summary:
+            summary[category] = 0
+
+        summary[category] += amount
+
+    return summary
