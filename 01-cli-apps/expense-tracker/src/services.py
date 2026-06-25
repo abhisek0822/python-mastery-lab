@@ -1,3 +1,4 @@
+from datetime import datetime
 from src.models import Expense
 from src.storage import save_expense, load_expenses
 
@@ -38,3 +39,23 @@ def get_category_summary():
         summary[category] += amount
 
     return summary
+
+def get_monthly_summary(year, month):
+    expenses = load_expenses()
+    summary = {}
+    total = 0
+
+    for expense in expenses:
+        expense_date = datetime.fromisoformat(expense["created_at"])
+
+        if expense_date.year == year and expense_date.month == month:
+            category = expense["category"]
+            amount = expense["amount"]
+
+            summary[category] = summary.get(category, 0) + amount
+            total += amount
+
+    return {
+        "summary": summary,
+        "total": total
+    }
